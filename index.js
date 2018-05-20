@@ -12,11 +12,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 /* server api */
 var articles = [{
-		guid: '2cd56218-e677-430e-9fc1-d0a286b835c2',
+		guid: '1',
 		title: '标题1',
 		body: '详细1'
 	},{
-		guid: '5200ab5c-18bd-436e-bfa6-5ad0c49056ad',
+		guid: '2',
 		title: '标题2',
 		body: '详细2'
 	}];
@@ -79,10 +79,14 @@ function layoutShell(data) {
 		+ '\n    <link rel="stylesheet" href="/styles.css" type="text/css" media="all" />'
 		+ '\n  </head>'
 		+ '\n  <body>'
-		+ '\n    <main>' + data.main + '</main>'
+		+ '\n    <main>'+data.main+'</main>'
+		+ '\n    <script src="/indexeddb.shim.min.js"></script>'
+		+ '\n    <script src="/fetch.js"></script>'
+		+ '\n    <script src="/promise.js"></script>'
+		+ '\n    <script src="/templates.js"></script>'
+		+ '\n    <script src="/application.js"></script>'
 		+ '\n  </body>'
-		+ '\n</html>';
-}
+		+ '\n</html>';}
 
 app.listen(port);
 console.log('listening on port', port);
