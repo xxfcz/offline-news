@@ -33,6 +33,23 @@ app.get('/stories/:guid', function (req, res) {
 
 /* ----------------------------------------------------- */
 
+app.get('/offline.appcache', function(req, res) {
+	res.set('Content-Type', 'text/cache-manifest');
+	res.send(`CACHE MANIFEST
+	  ./application.js
+	  ./indexeddb.shim.min.js
+	  ./promise.js
+	  ./styles.css
+	  ./fetch.js
+	  ./templates.js
+	  
+	  FALLBACK:
+	  / /
+
+	  NETWORK:
+	  *`);
+  });
+
 app.get('/article/:guid', function (req, res) {
 	fetch(api + '/' + req.params.guid)
 		.then(function (response) {
@@ -72,21 +89,21 @@ function layoutShell(data) {
 		title: data && data.title || 'FT Tech News',
 		main: data && data.main || ''
 	};
-	return '<!DOCTYPE html>'
-		+ '\n<html>'
-		+ '\n  <head>'
-		+ '\n    <title>' + data.title + '</title>'
-		+ '\n    <link rel="stylesheet" href="/styles.css" type="text/css" media="all" />'
-		+ '\n  </head>'
-		+ '\n  <body>'
-		+ '\n    <main>'+data.main+'</main>'
-		+ '\n    <script src="/indexeddb.shim.min.js"></script>'
-		+ '\n    <script src="/fetch.js"></script>'
-		+ '\n    <script src="/promise.js"></script>'
-		+ '\n    <script src="/templates.js"></script>'
-		+ '\n    <script src="/application.js"></script>'
-		+ '\n  </body>'
-		+ '\n</html>';}
+	return `<!DOCTYPE html>
+		<html manifest="./offline.appcache">
+		  <head>
+		    <title>${data.title}</title>
+		    <link rel="stylesheet" href="/styles.css" type="text/css" media="all" />
+		  </head>'
+		  <body>'
+		    <main>${data.main}</main>
+		    <script src="/indexeddb.shim.min.js"></script>
+		    <script src="/fetch.js"></script>
+		    <script src="/promise.js"></script>
+		    <script src="/templates.js"></script>
+		    <script src="/application.js"></script>
+		  </body>
+		</html>`;}
 
 app.listen(port);
 console.log('listening on port', port);
